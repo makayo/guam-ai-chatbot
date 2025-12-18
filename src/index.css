@@ -1,0 +1,72 @@
+/* Guam Flag Colors */
+:root {
+  --guam-deep-blue: #002147;
+  --guam-bright-red: #c8102e;
+  --guam-brown: #8b5e3c;
+  --guam-light-blue: #5dadec;
+  --guam-beige: #f4e2d8;
+  --guam-white: #ffffff;
+}
+
+body {
+  font-family: "Inter", "Nunito", "Segoe UI", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--guam-deep-blue);
+  color: var(--guam-white);
+  margin: 0;
+  padding: 0;
+}
+
+/* Custom animations for mascots */
+@keyframes wave {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  25% {
+    transform: rotate(15deg);
+  }
+  75% {
+    transform: rotate(-15deg);
+  }
+}
+
+@keyframes swim {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes bounce-gentle {
+  0%,
+  100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.mascot-wave {
+  animation: wave 2s ease-in-out infinite;
+}
+
+.mascot-swim {
+  animation: swim 3s ease-in-out infinite;
+}
+
+.mascot-bounce {
+  animation: bounce-gentle 2s ease-in-out infinite;
+}
+
+/* Chamorro diacritics support */
+@font-face {
+  font-family: "ChamorroFont";
+  src: local("Inter"), local("Nunito");
+  unicode-range: U+00E5, U+00F1, U+00C5, U+00D1;
+}
