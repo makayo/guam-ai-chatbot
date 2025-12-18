@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import './App.css';
 
 function App() {
@@ -7,11 +7,11 @@ function App() {
   const [translationOutput, setTranslationOutput] = useState('');
   const [showTranslation, setShowTranslation] = useState(false);
   const [translationMode, setTranslationMode] = useState('natural');
-  const [selectedWord, setSelectedWord] = useState(null);
+  const [, setSelectedWord] = useState(null);
   const [wordExplanation, setWordExplanation] = useState(null);
   const [currentPage, setCurrentPage] = useState('home');
   const [mascotAnimating, setMascotAnimating] = useState(false);
-  const [wordOfDay, setWordOfDay] = useState({
+  const [wordOfDay] = useState({
     chamoru: 'Hafa Adai',
     english: 'Hello/Welcome',
     definition: 'A traditional Chamoru greeting meaning "hello" or "welcome to our island"',
@@ -28,15 +28,46 @@ function App() {
   });
   const [feedbackSubmitting, setFeedbackSubmitting] = useState(false);
   const [feedbackSuccess, setFeedbackSuccess] = useState(false);
+  const [translating, setTranslating] = useState(false);
+  const [translationError, setTranslationError] = useState(null);
 
-  const handleTranslate = () => {
-    if (inputValue.trim()) {
-      const translation = isGuamLanguage
-        ? `English translation of: "${inputValue}"`
-        : `Chamoru translation of: "${inputValue}"`;
-      setTranslationOutput(translation);
-      setShowTranslation(true);
-      triggerMascotAnimation();
+  const handleTranslate = async () => {
+    if (!inputValue.trim()) return;
+
+    setTranslating(true);
+    setTranslationError(null);
+    triggerMascotAnimation();
+
+    try {
+      const response = await fetch('http://localhost:3001/api/translate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text: inputValue,
+          sourceLanguage: isGuamLanguage ? 'chamoru' : 'english',
+          targetLanguage: isGuamLanguage ? 'english' : 'chamoru',
+          mode: translationMode
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setTranslationOutput(data.translation);
+        setShowTranslation(true);
+      } else {
+        setTranslationError(data.error || 'Translation failed');
+        if (data.details) {
+          console.error('Translation error details:', data.details);
+        }
+      }
+    } catch (error) {
+      console.error('Translation error:', error);
+      setTranslationError('Unable to connect to translation service. Make sure Ollama is running.');
+    } finally {
+      setTranslating(false);
     }
   };
 
@@ -230,11 +261,19 @@ function App() {
                 <button
                   onClick={handleTranslate}
                   className="translate-button"
-                  disabled={!inputValue.trim()}
+                  disabled={!inputValue.trim() || translating}
                 >
-                  Translate
+                  {translating ? '⏳ Translating...' : 'Translate'}
                 </button>
               </div>
+
+              {/* Error Message */}
+              {translationError && (
+                <div className="translation-error">
+                  <span className="error-icon">⚠️</span>
+                  <p>{translationError}</p>
+                </div>
+              )}
 
               {/* Results Panel */}
               {showTranslation && (

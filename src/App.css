@@ -23,9 +23,9 @@ body {
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  min-height: 100vh;
   background-color: var(--guam-deep-blue);
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 /* ===== HEADER ===== */
@@ -138,7 +138,9 @@ body {
   display: flex;
   flex-direction: column;
   position: relative;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 16px 0 120px;
 }
 
 .gradient-background {
@@ -162,7 +164,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px 24px 20px;
+  padding: 20px 16px 12px;
   z-index: 1;
   animation: fadeInDown 0.6s ease;
 }
@@ -218,16 +220,16 @@ body {
 
 /* ===== TRANSLATION CONTAINER ===== */
 .translation-container {
-  flex: 1;
+  flex: 0 1 auto;
   display: flex;
   flex-direction: column;
-  padding: 0 24px 24px;
+  padding: 0 24px 32px;
   z-index: 1;
   gap: 20px;
   max-width: 900px;
   width: 100%;
   margin: 0 auto;
-  overflow-y: auto;
+  overflow: visible;
 }
 
 /* ===== INPUT SECTION ===== */
@@ -321,6 +323,35 @@ body {
 
 .translate-button:active:not(:disabled) {
   transform: translateY(0);
+}
+
+/* ===== TRANSLATION ERROR ===== */
+.translation-error {
+  background: linear-gradient(
+    135deg,
+    rgba(200, 16, 46, 0.2),
+    rgba(220, 38, 38, 0.2)
+  );
+  border: 2px solid rgba(200, 16, 46, 0.5);
+  border-radius: 12px;
+  padding: 16px 20px;
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+}
+
+.error-icon {
+  font-size: 24px;
+}
+
+.translation-error p {
+  color: var(--guam-white);
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
 }
 
 /* ===== RESULTS PANEL ===== */
@@ -1314,12 +1345,17 @@ body {
 }
 
 /* ===== FOOTER ===== */
+/* ===== FOOTER ===== */
 .app-footer {
   background: linear-gradient(135deg, var(--guam-deep-blue) 0%, #003366 100%);
   border-top: 3px solid var(--guam-bright-red);
   padding: 20px 24px;
   text-align: center;
-  z-index: 100;
+  color: var(--guam-white);
+  font-size: 14px;
+  margin-top: auto;
+  position: relative;
+  z-index: 5;
 }
 
 .footer-content {
@@ -1386,17 +1422,6 @@ body {
   align-items: flex-start;
   gap: 4px;
   animation: slideIn 0.3s ease;
-}
-
-/* ===== FOOTER ===== */
-.app-footer {
-  background-color: var(--guam-deep-blue);
-  border-top: 2px solid var(--guam-bright-red);
-  padding: 12px 24px;
-  text-align: center;
-  font-size: 14px;
-  color: var(--guam-white);
-  z-index: 10;
 }
 
 /* ===== ANIMATIONS ===== */
